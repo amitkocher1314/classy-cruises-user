@@ -7,7 +7,6 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -15,7 +14,7 @@ const SignUp = () => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      alert('Passwords do not match');
       return;
     }
 
@@ -45,10 +44,10 @@ const SignUp = () => {
       localStorage.setItem('authToken', data.idToken);
       localStorage.setItem('userId', data.localId);
 
-      dispatch(login({ token: data.idToken, userId: data.localId })); // Update the Redux state
+      dispatch(login({ token: data.idToken, userId: data.localId })); // Update the Redux state i.e user successfully login see here login reducer fn imported 
       history.push('/categories');
     } catch (error) {
-      setError('Error signing up: ' + error.message);
+      alert('Error signing up: ' + error.message);
     }
 
     setEmail('');
@@ -60,7 +59,7 @@ const SignUp = () => {
     <div className='flex items-center justify-center min-h-screen'>
       <div className='w-full max-w-md shadow-xl border-2 rounded-lg p-6'>
         <h2 className='text-2xl font-bold text-sky-800 mb-4 text-center'>Sign Up</h2>
-        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
+       
         <input
           type="email"
           placeholder="example@gmail.com"

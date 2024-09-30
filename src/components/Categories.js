@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Categories = () => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);        
   const history = useHistory();
-  const searchQuery = useSelector((state) => state.search.query);
+  const searchQuery = useSelector((state) => state.search.query);     //extract data from redux which we pass from header
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -14,7 +14,7 @@ const Categories = () => {
         const data = await response.json();
        // console.log(data)
         if (data) {
-          setCategories(Object.values(data));
+          setCategories(Object.values(data));   
         }
       } catch (error) {
         alert('Error fetching categories:', error);
@@ -25,11 +25,11 @@ const Categories = () => {
   }, []);
 
   const handleCategoryClick = (category) => {
-    history.push(`/listings?category=${category.name}`);
+    history.push(`/listings?category=${category.name}`);   //template literals used for accessing particular category data from firebase in next page 
   };
 
   const filteredCategories = categories.filter(category =>
-    category.name.toLowerCase().includes(searchQuery.toLowerCase())
+    category.name.toLowerCase().includes(searchQuery.toLowerCase())    //catgory.name fecth from firebase 
   );
 
   return (

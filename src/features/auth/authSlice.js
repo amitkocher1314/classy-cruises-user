@@ -1,5 +1,5 @@
-// features/auth/authSlice.js
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";    //creatslice redux toolkit function which create action type itself  
+//step1 initial state 
  const initialState = {
   isAuthenticated:false,
   token:null,
@@ -9,6 +9,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
   name: 'auth',
   initialState,
+ //2reducers create login and logout
   reducers :{
    login:(state,action) => {
       state.isAuthenticated = true;
@@ -23,5 +24,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { login, logout } = authSlice.actions;
-export default authSlice.reducer;
+export const { login, logout } = authSlice.actions;   //exporting login and logout reducer using authSlice.action which are then imported in our comp
+export default authSlice.reducer;  

@@ -2,23 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 
 const Listings = () => {
-  const [listings, setListings] = useState([]);
-  const [filteredListings, setFilteredListings] = useState([]);
+  const [listings, setListings] = useState([]);      //all data
+  const [filteredListings, setFilteredListings] = useState([]);  //data to display
   const [placeFilter, setPlaceFilter] = useState('');
   const [sortOrder, setSortOrder] = useState('default');
   const location = useLocation();
   const history = useHistory();
 
   const getQueryParams = () => {
-    return new URLSearchParams(location.search);
+    return new URLSearchParams(location.search);    //web API to access url part after ? see my page category=Hotels (read this on web query parameter in url vs dynamic route)
   };
 
-  
+  //fetch all listing in firebase stored
     const fetchListings = async () => {
       try {
         const response = await fetch('https://travel-project-auth-e9607-default-rtdb.firebaseio.com/listings.json');
         const data = await response.json();
-        if (data) {
+        if (data) { 
           setListings(Object.keys(data).map(key => ({
             id: key,
             ...data[key]
@@ -38,12 +38,12 @@ const Listings = () => {
     const interval = setInterval(fetchListings, 10000);
     return () => clearInterval(interval); // Clean up on unmount
   }, []);
-
+ // this use effect has all dependency placename, sort,location.search so any change in input trigger useeffect and page re render showing filter results
   useEffect(() => {
     const queryParams = getQueryParams();
-    const category = queryParams.get('category');
+    const category = queryParams.get('category');    //see my page url how category get urlSearchParams to access  part of url
     let filtered = [...listings];
-
+//first we access all listing from database and then on basis of category show in our page
     if (category) {
       filtered = filtered.filter(listing => listing.category === category);
     }
@@ -60,8 +60,10 @@ const Listings = () => {
 
     setFilteredListings(filtered);
   }, [listings, placeFilter, sortOrder, location.search]);
-
+  
+  // setting dynamic route for particular listing id
   const handleListingClick = (id, available) => {
+    //in db it contain true and false format
     if (available) {
       history.push(`/listings/${id}`);
     }

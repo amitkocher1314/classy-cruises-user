@@ -1,4 +1,3 @@
-// components/ForgotPassword.js
 import React, { useState } from 'react';
 import { useHistory,Link } from 'react-router-dom';
 

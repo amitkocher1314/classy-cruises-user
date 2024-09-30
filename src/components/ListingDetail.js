@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';    //hook to get dynamic path
 import TravelersModal from './TravelersModal';
 
 const ListingDetail = () => {
-  const { id } = useParams();
-  const [listing, setListing] = useState(null);
+  const { id } = useParams();   //extract id from url using useParams if after /id/id-1 then to extract it const {id,id-1} = useParams();
+  const [listing, setListing] = useState(null);    
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
   const [rooms, setRooms] = useState([]);
@@ -48,7 +48,7 @@ const ListingDetail = () => {
     }
   };
 
-  const handleReserve = () => {
+  const handleReserve = async () => {
     const totalDays = (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24);
     const totalRooms = rooms.length;
     const basePrice = totalDays * totalRooms * listing.pricePerNight;
@@ -71,10 +71,19 @@ const ListingDetail = () => {
       city: listing.city,
     };
 
-    // Store reservation in the database
-    storeReservationInDatabase(reservation);
+    try {
+      await storeReservationInDatabase(reservation);
 
-    // Optionally, you could also update the local state or navigate to a different page after reservation
+      // Clear the input fields after storing reservation
+      setCheckInDate(new Date().toISOString().split('T')[0]);
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      setCheckOutDate(tomorrow.toISOString().split('T')[0]);
+      setRooms([]);
+      setUserAddress('');
+    } catch (error) {
+      alert('Error storing reservation:', error);
+    }
   };
 
   const handleCheckInDateChange = (e) => {

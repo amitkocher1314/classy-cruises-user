@@ -13,10 +13,13 @@ const OrderHistory = () => {
         const data = await response.json();
 
         if (data) {
-          const ordersArray = Object.keys(data).map(key => ({
-            id: key,
-            ...data[key]
-          }));
+          const ordersArray = Object.keys(data)
+            .map(key => ({
+              id: key,
+              ...data[key]
+            }))
+            .filter(order => order.status === 'completed'); // Filter to show only completed orders
+
           setOrderHistory(ordersArray);
         }
       } catch (error) {
@@ -42,7 +45,7 @@ const OrderHistory = () => {
     <div className="container mx-auto py-8 px-4">
       <h2 className="text-2xl font-bold mb-4">Your Order History</h2>
       {orderHistory.length === 0 ? (
-        <p>You have no bookings.</p>
+        <p>You have no completed bookings.</p>
       ) : (
         orderHistory.map((order, index) => (
           <div key={index} className="bg-white shadow-md rounded-lg p-6 mb-4">

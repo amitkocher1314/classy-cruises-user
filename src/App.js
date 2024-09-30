@@ -10,8 +10,8 @@ import HomePage from './UI/HomePage';
 import OrderHistory from './components/OrderHistory';
 import ListingDetail from './components/ListingDetail';
 import Cart from './components/Cart';
-import ForgotPassword from './authentication/ForgotPassword';  // Import ForgotPassword
-import SignUp from './authentication/SignUp';  // Import SignUp
+import ForgotPassword from './authentication/ForgotPassword'; 
+import SignUp from './authentication/SignUp';  
 import { logout } from './features/auth/authSlice';
 
 function App() {
@@ -34,8 +34,8 @@ function App() {
         <div className="flex-grow">
           <Switch>
             <Route path="/login" component={LoginPage} />
-            <Route path="/forgot-password" component={ForgotPassword} />  {/* Add route for ForgotPassword */}
-            <Route path="/sign-up" component={SignUp} />  {/* Add route for SignUp */}
+            <Route path="/forgot-password" component={ForgotPassword} />  
+            <Route path="/sign-up" component={SignUp} /> 
             
             {isAuthenticated ? (
               <>

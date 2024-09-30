@@ -1,4 +1,3 @@
-// components/Header.js
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -6,36 +5,45 @@ import { logout } from '../features/auth/authSlice';
 import { setSearchQuery } from '../features/search/searchSlice';
 
 const Header = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
- //const cartItems = useSelector((state) => state.cart.items);
-  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);  //here with selector we access data of redux and get login status
+  const dispatch = useDispatch();   //dispatch input typed to redux reducer from there its accessed in categories page
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation();    //using location we show search bar only in category page
 
   const navigateToLogin = () => {
-    history.push('/login');
+    history.push('/login');                
   };
 
+   //when signout button clicked 
   const handleSignOut = () => {
     dispatch(logout());
     history.push('/');
   };
-
+   
+  //function callled when input entered in search bar 
   const handleSearchChange = (e) => {
     dispatch(setSearchQuery(e.target.value));
   };
-
-  const navigateToCart = () => {
-    history.push('/cart');
-  };
-
+//function handle dropdown of different pages 
   const handleCategoryChange = (e) => {
     const selectedCategory = e.target.value;
 
     if (selectedCategory === 'stays') {
       history.push('/categories');
     } else {
-      alert('More feature will be added soon.Please continue with hotel bookings');
+      alert('More features will be added soon. Please continue with hotel bookings.');
+    }
+    // this below is done to empty event when any option is selected 
+    e.target.value = ''; 
+  };
+
+  const handleBookingChange = (e) => {
+    const selectedBookingOption = e.target.value;
+
+    if (selectedBookingOption === 'viewBookings') {
+      history.push('/cart');
+    } else if (selectedBookingOption === 'travelHistory') {
+      history.push('/order-history');
     }
     e.target.value = '';
   };
@@ -74,12 +82,15 @@ const Header = () => {
                   className="border border-gray-300 rounded-lg py-2 px-4"
                 />
               )}
-              <button
-                onClick={navigateToCart}
-                className="text-gray-800 hover:text-blue-500 focus:outline-none rounded-lg py-2 px-4"
+              <select
+                className="py-2 px-4 text-gray-800"
+                onChange={handleBookingChange}
+                defaultValue=""
               >
-                Bookings 
-              </button>
+                <option value="" disabled>Bookings</option>
+                <option value="viewBookings">View Bookings</option>
+                <option value="travelHistory">Travel History</option>
+              </select>
               <button
                 onClick={handleSignOut}
                 className="text-gray-800 hover:text-blue-500 focus:outline-none rounded-lg py-2 px-4"
